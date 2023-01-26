@@ -28,7 +28,7 @@ gcc -o a.out zstd_compression.c -lzstd -pthread
 ### Execution
 
 ```
-./a.out <num_of_threads> <compression_size>
+./a.out <num_of_threads> <compression_size> <file name>
 ```
 
 ## About the Code
