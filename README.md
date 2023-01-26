@@ -1,13 +1,13 @@
-#Parallel Compression - Project 1
+# Parallel Compression - Project 1
 
 The objective of this assignment was to utilize multithreaded programming in order to efficiently compress large chunks of
 data. Compression was accomplished through Facebook's open sourced ZSTD library.
 
 ## Installation and Environment
 
-###GNU Compiler
+### GNU Compiler
 
-###ZSTD Library
+### ZSTD Library
 In your terminal send the following command:
 ```
 sudo apt-get install libzstd-dev
@@ -15,7 +15,7 @@ sudo apt-get install libzstd-dev
 
 ##Compilation
 
-###Build
+### Build
 
 The program can be compiled using `gcc` or `g++`
 ```
@@ -23,16 +23,17 @@ g++ -g zstd_compression.c -o a.out -Wall -Wextra -pthread -lzstd
 ```
 ```
 INSERT YOUR "gcc" COMPILATION HERE
+```
 
-###Execution
+### Execution
 
 ```
 ./a.out <num_of_threads> <compression_size>
 ```
 
-##Code Description
+## Code Description
 
-##Testing and Analysis
+## Testing and Analysis
 
 Testing consisted of the efficiency associated with the number of threads as well as the amount of data that needs to be
 compressed.
@@ -56,5 +57,5 @@ compressed.
 | 		|	        | 20          	| 0.33719	        |
 
 
-##Conclusion
+## Conclusion
 
