@@ -40,7 +40,7 @@ INSERT YOUR "gcc" COMPILATION HERE
 Testing consisted of the efficiency associated with the number of threads as well as the amount of data that needs to be
 compressed.
 
-| Filename	| Size(KB)	| # Threads	| Compression Time(s)	|
+| Filename	| Size(KB)	| # Threads	| Compression Time (s)|
 |---------------|---------------|---------------|-----------------------|
 | wot.txt	| 24400         | 4          	| 0.26367	        |
 | 		|	        | 8          	| 0.25668	        |
