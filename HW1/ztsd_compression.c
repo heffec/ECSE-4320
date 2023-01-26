@@ -55,7 +55,7 @@ static void *compressFile_orDie(void *data)
     /* This loop reads from the input file, compresses that entire chunk,
      * and writes all output produced to the output file.
      */
-    size_t const toRead = buffInSize;
+    size_t const toRead = 128000; //16KB
     start = clock();
     for (;;) {
         size_t read = fread_orDie(buffIn, toRead, fin);
