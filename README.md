@@ -13,7 +13,7 @@ In your terminal send the following command:
 sudo apt-get install libzstd-dev
 ```
 
-##Compilation
+## Compilation
 
 ### Build
 
