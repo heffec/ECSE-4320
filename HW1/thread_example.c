@@ -1,15 +1,18 @@
+#define ZSTD_STATIC_LINKING_ONLY
 #include <stdio.h>     // printf
 #include <stdlib.h>    // free
 #include <string.h>    // memset, strcat, strlen
 #include <zstd.h>      // presumes zstd library is installed
 #include "common.h"    // Helper functions, CHECK(), and CHECK_ZSTD()
 #include <pthread.h>
+#include <time.h>
 
 typedef struct compress_args
 {
   const char *fname;
   char *outName;
   int cLevel;
+  int psize;
 #if defined(ZSTD_STATIC_LINKING_ONLY)
   ZSTD_threadPool *pool;
 #endif
@@ -17,9 +20,9 @@ typedef struct compress_args
 
 static void *compressFile_orDie(void *data)
 {
-    const int nbThreads = 16;
-
+    clock_t start, end;
     compress_args_t *args = (compress_args_t *)data;
+    const int nbThreads = args->psize;
     fprintf (stderr, "Starting compression of %s with level %d, using %d threads\n", args->fname, args->cLevel, nbThreads);
     /* Open the input and output files. */
     FILE* const fin  = fopen_orDie(args->fname, "rb");
@@ -52,7 +55,8 @@ static void *compressFile_orDie(void *data)
     /* This loop reads from the input file, compresses that entire chunk,
      * and writes all output produced to the output file.
      */
-    size_t const toRead = 12800;
+    size_t const toRead = buffInSize;
+    start = clock();
     for (;;) {
         size_t read = fread_orDie(buffIn, toRead, fin);
         /* Select the flush mode.
@@ -89,9 +93,13 @@ static void *compressFile_orDie(void *data)
         if (lastChunk) {
             break;
         }
+
     }
 
-    fprintf (stderr, "Finishing compression of %s\n", args->outName);
+    end = clock();
+    double duration = ((double)end-start)/CLOCKS_PER_SEC;
+
+    fprintf (stderr, "Finishing compression of %s\n Time elapsed = %f seconds\n", args->outName, duration);
 
     ZSTD_freeCCtx(cctx);
     fclose_orDie(fout);
@@ -110,13 +118,14 @@ static char* createOutFilename_orDie(const char* filename)
     size_t const outL = inL + 5;
     void* const outSpace = malloc_orDie(outL);
     memset(outSpace, 0, outL);
-    strcat((char*)outSpace, filename);
-    strcat((char*)outSpace, ".zst");
+    strcat(outSpace, filename);
+    strcat(outSpace, ".zst");
     return (char*)outSpace;
 }
 
 int main(int argc, const char** argv)
 {
+
     const char* const exeName = argv[0];
 
     if (argc<=3) {
@@ -143,14 +152,15 @@ int main(int argc, const char** argv)
     fprintf (stderr, "All threads use its own thread pool\n");
 #endif
 
-    pthread_t *threads = (pthread_t*)malloc_orDie(argc * sizeof(pthread_t));
-    compress_args_t *args = (compress_args_t*)malloc_orDie(argc * sizeof(compress_args_t));
+    pthread_t *threads = malloc_orDie(argc * sizeof(pthread_t));
+    compress_args_t *args = malloc_orDie(argc * sizeof(compress_args_t));
 
     for (unsigned i = 0; i < argc; i++)
     {
       args[i].fname = argv[i];
       args[i].outName = createOutFilename_orDie(args[i].fname);
       args[i].cLevel = level;
+      args[i].psize = pool_size;
 #if defined(ZSTD_STATIC_LINKING_ONLY)
       args[i].pool = pool;
 #endif

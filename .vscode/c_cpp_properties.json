@@ -4,8 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/zstd-dev/zstd-dev/lib",
-                "${workspaceFolder}/zstd-dev/zstd-dev/examples"
+                "${workspaceFolder}/zstd-dev/zstd-dev/lib"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
