@@ -6,7 +6,7 @@ data. Compression was accomplished through Facebook's open sourced ZSTD library.
 ## Installation and Environment
 
 ### GNU Compiler
-
+IF YOU THINK IT'S IMPORTANT TO INCLUDE UR SETUP PUT IT HERE
 ### ZSTD Library
 In your terminal send the following command:
 ```
@@ -32,6 +32,8 @@ INSERT YOUR "gcc" COMPILATION HERE
 ```
 
 ## Code Description
+
+
 
 ## Testing and Analysis
 
